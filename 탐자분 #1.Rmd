@@ -1,0 +1,431 @@
+---
+title: 'R-object : LJH'
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## **R- Object**
+
+# 1.
+
+```{r 01}
+x <- c(17, 16, 20, 24, 22, 15, 21, 18)
+x
+```
+  **(1)**
+
+```{r 02}
+x[x >= 20]
+```
+
+  **(2)**
+```{r 03}
+x[x >= 20] <- 100
+y <- x
+y
+```
+
+# 2.
+**(1)**
+```{r 04}
+x <- matrix(c(3, -1, -1, -1, -1, -1, 4, -1, -1, -1, -1, -1, 5, -1, -1, -1, -1, -1, 6, -1, -1, -1, -1, -1, 7), nrow=5)
+x
+```
+
+**(2)**
+```{r 05}
+y <- x[,-5]
+y
+```
+
+**(3)**
+```{r 06}
+yinfo1 <- c(nrow(y),ncol(y))
+yinfo1
+```
+
+또는
+
+```{r 07}
+yinfo2 <- dim(y)
+yinfo2
+```
+
+**(4)**
+```{r 08}
+y[y==-1] <- 0
+y1 <- y
+y1
+```
+
+# 3.
+```{r 09, warning=FALSE}
+rowdata <- read.table("c:/data/rowdata.txt", header = TRUE, sep=",")
+head(rowdata)
+```
+**(1)**
+```{r 10}
+rdata <- data.frame(rowdata)
+rdata
+```
+
+**(2)**
+is.na() 함수를 사용하면 NA 값이 있는 곳에 TRUE가, 나머지는 FALSE가 할당된다.
+
+**(3)**
+```{r 11}
+no.na <- which((!is.na(rdata$V2)&(!is.na(rdata$V3))))
+no.na
+```
+
+**(4)**
+```{r 12}
+rdata1 <- rdata[no.na,]
+rdata1
+```
+
+# 4.
+**(1)**
+```{r 13}
+temp <- list(c(TRUE, FALSE), matrix(c(1,0,1,0), nrow=2), seq(from=0, to=1, length=100), 1, 2, 3, 4)
+temp
+```
+
+**(2)**
+```{r 14}
+temp[[2]] <- NULL
+```
+**(3)**
+```{r 15}
+temp
+```
+
+temp 리스트의 두 번째 원소를 제거한 결과 3번째 위치한 결과값은 1이 되었다.
+
+**(4)**
+```{r 16}
+length(temp)
+```
+
+# 5.
+
+**(1)**
+```{r 17}
+a1 <- -1:2
+a2 <- 1:2
+a1 + a2
+```
+
+길이가 다른 벡터끼리 연산을 하면, 길이가 짧은 벡터가 원소를 재사용하여 길이가 긴 벡터에 맞춰서 연산을 한다. 따라서 <br /> a1=(-1, 0, 1, 2) + a2=(1, 2) = (-1, 0, 1, 2) + (1, 2, 1, 2) = (0, 2, 2, 4) 가 된다. <br />
+
+**(2)**
+```{r 18}
+a1 <- -(1:2)
+a2 <- 1:2
+a1 + a2
+```
+
+벡터를 생성하는 연산자인 ':'은 말그대로 하나의 연산자로 취급하기 때문에, 사칙연산과 같이 괄호를 사용하면, 해당 연산을 먼저 수행한다. 따라서 a1 <- -(1:2)의 결과 a1에는 (-1, -2)가 저장되고, (1, 2)인 a2와 더하면 (0, 0)이 된다.
+
+**(3)**
+```{r 19}
+a1 <- matrix(0,2,2)
+a2 <- c(3,4)
+a1 + a2
+```
+matrix(0, 2, 2)는 2행 2열의 원소가 0으로 된 행렬을 만들어 준다. 벡터와 행렬을 연산하게 되면, 행렬을 세로로 열끼리 이어서 하나의 벡터로 인식하고 계산하게 되므로 (0, 0, 0, 0) 벡터와 (3, 4) 벡터의 계산과 비슷하다. 그럼 (1)에서처럼 뒷 벡터를 재사용하여 (3, 4, 3, 4) 벡터로 연산을 마치고, 다시 원래의 행렬 형태로 출력하는 것이다.
+
+
+**(4)**
+```{r 20}
+a1 <- matrix(1:4,2,2)
+a1[a1>2] = 0
+a1
+```
+
+이것도 (3)과 마찬가지로 행렬을 벡터처럼 인식해 연산을 행한다. 그럼 a1은 (1, 2, 3, 4)에서 2보다 큰 3과 4를 0으로 만들고, (1, 2, 0, 0)의 벡터를 다시 행렬 형태로 출력해서 위와 같은 결과를 만들어낸다. 
+
+**(5)**
+```{r 21}
+a1 <- 1:5
+a1[-1] - a1[length(a1)]
+```
+
+a1[-1]은 a1의 첫번째 원소를 제외한 나머지로 (2, 3, 4, 5)가 된다. a1[length(a1)]에서 length(a1)는 a1의 길이, 즉 5이므로 a1[5]와 같은 값을 같는데, a1의 5번째 원소는 5이므로 (5)가 된다. a1[-1]에서 a1[length(a1)]을 뺀 계산은 (2, 3, 4 ,5)에서 (5)를 뺀 것과 같은데, 여기서 (5)는 4번 재사용 되어서 (2, 3, 4, 5) - (5, ,5 ,5, 5)와 같은 결과가 나타난다. 따라서 (-3, -2, -1, 0)이 된다.
+
+
+## ** R-Prigramming
+<br /> <br />
+
+# 1.
+```{r 22}
+a <- function(n){
+  a1 <- 1
+  a2 <- 3
+  if (n == 1) return(a1)
+  if (n == 2) return(a2)
+  else 0.9*a(n-1)-0.1*a(n-2)+1
+}
+
+a(5)
+```
+<br /> <br />
+
+# 2.
+```{r 23}
+i <- 1
+while(a(i) <= 4){
+  i <- i + 1
+}
+i
+```
+
+<br /> <br />
+
+# 3.
+```{r 24}
+A <- matrix(runif(100), 50, 5)
+v <- rep(0,50)
+for(i in 1:50){
+  v[i] <- sum(A[i,])
+}
+v
+```
+
+<br /> <br />
+
+# 4.
+```{r 25}
+tmp = rep(0, 10)
+a <- 10:1
+idx = 1
+for ( j in a)
+{
+  if (j<5)
+  {
+    tmp[idx] <- a[j]
+    idx <- idx + 1
+  }
+}
+tmp
+```
+
+<br /> <br />
+
+# 5.
+```{r 26}
+set.seed(123)
+x <- matrix(sample(1:50, 5000 , replace = TRUE), 1000, 5)
+sid <- sample(1:10, 1000, replace = TRUE)
+head(sid)
+```
+
+<br /> <br />
+
+# 6.
+```{r 27}
+m.mat <- matrix(0, 10, 5)
+for(j in 1:10){
+  m.mat[j,] <- colMeans(x[which(sid==j),])
+}
+m.mat
+```
+
+<br /> <br />
+
+# 6.
+```{r 28}
+idist <- matrix(0, 1000, 10)
+for(i in 1:1000){
+  for(j in 1:10){
+    idist[i,j] <- sum(x[i,]*m.mat[j,])/sqrt(sum(x[i,]^2)*sum(m.mat[j,]^2))
+  }
+}
+head(idist)
+```
+
+<br /> <br />
+
+# 7.
+```{r 29}
+ivec <- rep(0, 1000)
+for(i in 1:1000){
+  ivec[i] <- which.min(idist[i,])
+}
+head(ivec)
+```
+
+<br /> <br />
+
+# 8.
+```{r 30}
+set.seed(1)
+a = list()
+for (i in 1:1000){
+  x = rpois(1,4)+1
+  x = min(x,10) 
+  a[[i]] = sample(1:10, x)
+}
+```
+
+**(1)**
+
+```{r 31}
+freq_game <- rep(0,1000)
+for(i in 1:1000){
+  freq_game[i] <- length(a[[i]])
+}
+table(freq_game)
+```
+간혹 경기에 출전한 사람이 1명뿐인 경기들이 있다. 이 경우는 경기가 이루어지지 않으므로 점수 부여를 하지 않겠다.
+<br /> <br />
+
+**(2)**
+```{r 32}
+score <- rep(0,10)
+a1 <- a[which(freq_game == 2 | freq_game == 3)]
+for(i in 1:length(which(freq_game == 2 | freq_game == 3))){
+  p <- a1[[i]][1]
+  score[p] <- score[p] + 1
+}
+
+a2 <- a[which(freq_game > 3 & freq_game <= 6)]
+for(i in 1:length(which(freq_game > 3 & freq_game <= 6))){
+  p <- a2[[i]][1]
+  q <- a2[[i]][2]
+  score[p] <- score[p] + 2
+  score[q] <- score[q] + 1
+}
+
+a3 <- a[which(freq_game >7)]
+for(i in 1:length(which(freq_game >7))){
+  p <- a3[[i]][1]
+  q <- a3[[i]][2]
+  r <- a3[[i]][3]
+  score[p] <- score[p] + 3
+  score[q] <- score[q] + 2
+  score[r] <- score[r] + 1
+}
+score
+which.max(score)
+```
+경기 점수를 합산한 결과 9번 선수가 가장 높은 점수를  획득했다.
+<br /> <br />
+
+# 9.
+```{r 33}
+set.seed(1)
+m1 = 10
+m2 = 5
+num = 0
+```
+
+**(1)**
+```{r 34}
+for(i in 1:4){
+  c <- rbinom(1,1,1/2)
+  if(c == 0){
+    m1 <- m1 - 1
+    m2 <- m2 + 1
+  }else{
+    m1 <- m1 + 1
+    m2 <- m2 - 1
+  }
+  num <- num + 1
+}
+m1
+```
+0이 2번, 1이 2번으로 여전히 10원을 갖고 있다.
+<br /> <br />
+
+**(2)**
+```{r 35}
+set.seed(1)
+while(TRUE){
+  c <- rbinom(1,1,1/2)
+  if(c == 0){
+    m1 <- m1 - 1
+    m2 <- m2 + 1
+  }else{
+    m1 <- m1 + 1
+    m2 <- m2 - 1
+  }
+  num <- num + 1
+  if(m1 == 0 | m2 == 0){
+    if(m1 == 0) print("B양 승")
+    else print("A군 승")
+    break
+  }
+}
+num
+```
+A군이 195번만에 게임에서 이긴다.
+<br /> <br />
+
+**(3)**
+```{r 36}
+win <- rep(0,2)
+for(k in 1:200){
+  set.seed(k)
+  m1 = 10
+  m2 = 5
+  num = 0
+  while(TRUE){
+  c <- rbinom(1,1,1/2)
+  if(c == 0){
+    m1 <- m1 - 1
+    m2 <- m2 + 1
+  }else{
+    m1 <- m1 + 1
+    m2 <- m2 - 1
+  }
+  num <- num + 1
+  if(m1 == 0 | m2 == 0){
+    if(m1 == 0) win[2] <- win[2] + 1
+    else win[1] <- win[1] + 1
+    break
+    }
+  }
+}
+win
+```
+A군은 200번의 실험 중 129번의 시험에서 이긴다.
+
+<br /> <br />
+
+# 10.
+```{r 37}
+Awin <- rep(0,4)
+for (i in 2:5){
+  for(k in 1:200){
+    set.seed(k)
+    m1 = 10
+    m2 = 5 * i
+    num = 0
+    while(TRUE){
+    c <- rbinom(1,1,1/2)
+    if(c == 0){
+      m1 <- m1 - 1
+      m2 <- m2 + 1
+    }else{
+      m1 <- m1 + 1
+      m2 <- m2 - 1
+    }
+    num <- num + 1
+    if(m1 == 0 | m2 == 0){
+      if(m1 == 0) Awin[i-1] <- Awin[i-1]
+      else Awin[i-1] <- Awin[i-1] + 1
+      break
+      }
+    }
+  }
+  print(Awin[i-1] / 200)
+}
+```
+A군이 승리하는 비율은 B양이 10원일 때는 49.5%, 15원 일 때는 39%, 20원일 때는 33.5%, 25원일 때는 30%이다.
